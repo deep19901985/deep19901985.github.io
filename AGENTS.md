@@ -28,3 +28,7 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+- Site is a static export (TanStack prerender, no backend) deployed to GitHub Pages via .github/workflows/deploy-pages.yml — GitHub Pages cannot run server code.
+- Portfolio content lives as data arrays in src/routes/index.tsx — one place to edit verified facts.

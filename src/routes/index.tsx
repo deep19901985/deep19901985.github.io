@@ -1,13 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowUpRight, Github, Linkedin, MapPin } from "lucide-react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { ArrowUpRight, Github, Linkedin, Mail, MapPin, Menu, X } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Deepthy Chullikkatt Kunjachan — Analytics & Data Engineering Portfolio" },
-      { name: "description", content: "London-based analytics engineer with 4.5+ years in BI, SQL data modelling, data engineering and applied AI." },
+      { title: "Deepthy Chullikkatt Kunjachan — Data Analytics, BI & Data Engineering" },
+      { name: "description", content: "London-based BI professional with 4.5+ years of commercial experience, expanding into analytics engineering, data engineering and applied AI." },
       { property: "og:title", content: "Deepthy Chullikkatt Kunjachan — Portfolio" },
-      { property: "og:description", content: "Analytics Engineering, Data Engineering, Business Intelligence and Applied AI." },
+      { property: "og:description", content: "Data Analytics & BI | Analytics Engineering | Data Engineering | Applied AI" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -17,127 +18,229 @@ export const Route = createFileRoute("/")({
 
 const GH = "https://github.com/deep19901985";
 const LI = "https://www.linkedin.com/in/deepthyck/";
-const nav = ["About", "Experience", "Skills", "Projects", "Education", "Contact"];
+const EMAIL = "deepthy2k@gmail.com";
+const SANCHARI = `${GH}/sanchari-youtube-analytics`;
+const nav = ["About", "Experience", "Projects", "Skills", "Credentials", "Education", "Contact"];
+
+const experience = [
+  "Developed and maintained 100+ dashboards across HR, finance and operations.",
+  "Built Sisense Elasticube models and SQL-based reporting solutions.",
+  "Contributed to a Windows-to-Linux reporting migration that reduced maintenance effort by approximately 25%.",
+  "Mentored five colleagues and worked across Agile delivery teams.",
+];
 
 const skills = [
-  { group: "Data Engineering", items: ["Python", "PySpark", "Databricks", "Delta Lake"] },
-  { group: "Analytics Engineering", items: ["SQL", "Data modelling", "Enterprise reporting"] },
-  { group: "Business Intelligence", items: ["Dashboards", "Reporting", "Stakeholder insights"] },
-  { group: "Applied AI", items: ["RAG", "AI automation", "Conversational AI"] },
+  { group: "BI & Reporting", items: ["Sisense", "Elasticube modelling", "Dashboard design", "Enterprise reporting"] },
+  { group: "Data & Analytics Engineering", items: ["SQL", "Data modelling", "Python", "PySpark", "Databricks", "Delta Lake"] },
+  { group: "Applied AI", items: ["RAG", "OpenAI API", "Pinecone", "n8n", "Prompt design", "Conversation design"] },
+  { group: "Ways of working", items: ["Agile delivery", "Mentoring", "Stakeholder reporting"] },
+];
+
+const metrics = [
+  { value: "37,327", label: "Bronze records ingested" },
+  { value: "36,251", label: "Unique Silver records" },
+  { value: "1,076", label: "Overlapping observations reconciled" },
 ];
 
 const projects = [
-  { title: "Sanchari YouTube Analytics", tag: "Flagship", desc: "An end-to-end YouTube analytics pipeline built on a lakehouse architecture.", stack: ["Python", "PySpark", "Databricks", "Delta Lake"], href: `${GH}/sanchari-youtube-analytics` },
-  { title: "Retrieval-Augmented Generation", tag: "Applied AI", desc: "A RAG project that grounds language model answers in a document set.", stack: ["RAG", "Python"], href: GH },
-  { title: "AI Automation", tag: "Applied AI", desc: "A workflow automation project that uses AI to cut repetitive manual steps.", stack: ["Automation", "Python"], href: GH },
-  { title: "Conversational AI", tag: "Applied AI", desc: "A conversational assistant project exploring dialogue design and language models.", stack: ["Conversational AI"], href: GH },
+  { title: "AI Customer Assistant", tag: "RAG · Automation", desc: "A retrieval-augmented customer assistant with automated workflows.", stack: ["RAG", "n8n", "OpenAI API", "Pinecone"] },
+  { title: "Voice AI Mental Health Triage", tag: "Hackathon · 3rd prize, London", desc: "ElevenLabs Worldwide Hackathon, London, December 2025. My contribution: prompt design, conversation-flow design and AI interaction testing.", stack: ["ElevenLabs", "Voice AI", "Prompt design"] },
+  { title: "Family Companion AI", tag: "OpenAI Build Week 2026", desc: "A companion AI project built during OpenAI Build Week 2026.", stack: ["OpenAI", "Conversational AI"] },
+  { title: "MSc House Price Prediction", tag: "Research", desc: "Research into KNN and Random Forest imputation techniques for house price prediction.", stack: ["Python", "KNN", "Random Forest"] },
 ];
 
-function Section({ id, label, children }: { id: string; label: string; children: React.ReactNode }) {
+const credentials = [
+  { name: "Microsoft Azure AI Fundamentals (AI-900)", status: "Earned" },
+  { name: "DataCamp Data Engineer Associate", status: "Earned" },
+  { name: "Databricks Lakeflow knowledge badges", status: "Earned" },
+  { name: "Databricks Data Engineer Associate", status: "In progress" },
+  { name: "Microsoft Fabric Analytics Engineer (DP-600)", status: "In progress" },
+  { name: "Microsoft Power BI Data Analyst (PL-300)", status: "Planned" },
+] as const;
+
+const education = [
+  { degree: "MSc Data Science", school: "Nottingham Trent University", year: "2024" },
+  { degree: "MTech Optoelectronics & Laser Technology", school: "Cochin University of Science and Technology (CUSAT)", year: "2012" },
+];
+
+function Reveal({ children, className = "", delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => { if (e?.isIntersecting) { setShown(true); io.disconnect(); } }, { threshold: 0.12 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
   return (
-    <section id={id} className="mx-auto max-w-6xl scroll-mt-24 border-t border-border px-6 py-20 md:grid md:grid-cols-[200px_1fr] md:gap-12">
-      <p className="mb-6 text-xs font-semibold uppercase tracking-[0.2em] text-teal">{label}</p>
-      <div>{children}</div>
+    <div ref={ref} style={{ transitionDelay: `${delay}ms` }}
+      className={`transition-all duration-700 ease-out motion-reduce:transition-none ${shown ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0 motion-reduce:translate-y-0 motion-reduce:opacity-100"} ${className}`}>
+      {children}
+    </div>
+  );
+}
+
+function Section({ id, label, children }: { id: string; label: string; children: ReactNode }) {
+  return (
+    <section id={id} aria-labelledby={`${id}-h`} className="mx-auto max-w-6xl scroll-mt-20 border-t border-border px-6 py-16 md:grid md:grid-cols-[180px_1fr] md:gap-12 md:py-24">
+      <h2 id={`${id}-h`} className="mb-6 text-xs font-semibold uppercase tracking-[0.2em] text-accent-foreground">{label}</h2>
+      <Reveal>{children}</Reveal>
     </section>
   );
 }
 
+const btnPrimary = "inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition hover:-translate-y-0.5 hover:bg-teal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal";
+const btnGhost = "inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-3 text-sm font-medium transition hover:-translate-y-0.5 hover:border-teal hover:text-accent-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal";
+
+function Contacts() {
+  return (
+    <div className="flex flex-wrap gap-3">
+      <a href={`mailto:${EMAIL}`} className={btnPrimary}><Mail className="h-4 w-4" aria-hidden /> Email</a>
+      <a href={LI} target="_blank" rel="noreferrer" className={btnGhost}><Linkedin className="h-4 w-4" aria-hidden /> LinkedIn</a>
+      <a href={GH} target="_blank" rel="noreferrer" className={btnGhost}><Github className="h-4 w-4" aria-hidden /> GitHub</a>
+    </div>
+  );
+}
+
 function Index() {
+  const [open, setOpen] = useState(false);
   return (
     <div className="min-h-screen bg-background font-sans text-foreground">
-      <header className="sticky top-0 z-20 border-b border-border bg-background/85 backdrop-blur">
+      <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-card focus:px-3 focus:py-2">Skip to content</a>
+      <header className="sticky top-0 z-30 border-b border-border bg-background/90 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <a href="#top" className="font-display text-lg font-semibold">Deepthy C K<span className="text-teal">.</span></a>
-          <nav className="hidden gap-7 text-sm text-muted-foreground md:flex">
-            {nav.map((n) => <a key={n} href={`#${n.toLowerCase()}`} className="transition-colors hover:text-teal">{n}</a>)}
+          <nav aria-label="Main" className="hidden gap-6 text-sm text-muted-foreground lg:flex">
+            {nav.map((n) => <a key={n} href={`#${n.toLowerCase()}`} className="transition-colors hover:text-foreground">{n}</a>)}
           </nav>
+          <button className="lg:hidden" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} onClick={() => setOpen(!open)}>
+            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
         </div>
+        {open && (
+          <nav aria-label="Mobile" className="flex flex-col border-t border-border px-6 py-3 lg:hidden">
+            {nav.map((n) => <a key={n} href={`#${n.toLowerCase()}`} onClick={() => setOpen(false)} className="py-2 text-base">{n}</a>)}
+          </nav>
+        )}
       </header>
 
-      <main id="top">
-        <section className="mx-auto max-w-6xl px-6 pb-24 pt-20 md:pt-32">
-          <p className="rise mb-6 flex items-center gap-2 text-sm text-muted-foreground"><MapPin className="h-4 w-4 text-teal" /> London, United Kingdom</p>
-          <h1 className="rise font-display text-5xl leading-[1.05] tracking-tight md:text-7xl" style={{ animationDelay: "80ms" }}>
-            Deepthy Chullikkatt Kunjachan
-          </h1>
-          <p className="rise mt-6 max-w-2xl text-lg text-muted-foreground md:text-xl" style={{ animationDelay: "160ms" }}>
-            Analytics Engineering · Data Engineering · Business Intelligence · Applied AI. I turn raw data into reliable models, clear reporting and practical AI tools.
+      <main id="main">
+        <section id="top" className="mx-auto max-w-6xl px-6 pb-20 pt-16 md:pb-28 md:pt-28">
+          <p className="rise mb-6 flex items-center gap-2 text-sm text-muted-foreground"><MapPin className="h-4 w-4 text-teal" aria-hidden /> London, United Kingdom</p>
+          <h1 className="rise font-display text-4xl leading-[1.05] tracking-tight sm:text-5xl md:text-7xl" style={{ animationDelay: "80ms" }}>Deepthy Chullikkatt Kunjachan</h1>
+          <p className="rise mt-6 text-base font-semibold text-accent-foreground md:text-lg" style={{ animationDelay: "140ms" }}>
+            Data Analytics & BI <span className="text-border">|</span> Analytics Engineering <span className="text-border">|</span> Data Engineering <span className="text-border">|</span> Applied AI
           </p>
-          <div className="rise mt-10 flex flex-wrap gap-3" style={{ animationDelay: "240ms" }}>
-            <a href="#projects" className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-teal">View projects</a>
-            <a href={GH} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-medium transition hover:border-teal hover:text-teal"><Github className="h-4 w-4" /> GitHub</a>
-            <a href={LI} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-medium transition hover:border-teal hover:text-teal"><Linkedin className="h-4 w-4" /> LinkedIn</a>
-          </div>
+          <p className="rise mt-4 max-w-2xl text-lg text-muted-foreground" style={{ animationDelay: "200ms" }}>
+            BI professional with 4.5+ years of commercial experience in enterprise reporting and SQL-based data modelling, now building lakehouse pipelines and applied AI solutions.
+          </p>
+          <div className="rise mt-10" style={{ animationDelay: "260ms" }}><Contacts /></div>
         </section>
 
         <Section id="about" label="About">
-          <p className="font-display text-2xl leading-relaxed md:text-3xl">
-            I have 4.5+ years of commercial BI and analytics experience, with a focus on enterprise reporting and SQL-based data modelling.
-          </p>
-          <p className="mt-6 max-w-2xl text-muted-foreground">
-            With an MSc in Data Science, I work across the data stack, from building pipelines in PySpark and Databricks to designing models that help decision-makers. I'm increasingly bringing applied AI, including retrieval-augmented generation and automation, into analytics work.
-          </p>
+          <p className="font-display text-2xl leading-relaxed md:text-3xl">I build reporting people rely on, and I'm extending that foundation into modern data engineering and applied AI.</p>
+          <p className="mt-6 max-w-2xl text-muted-foreground">At Buck (Gallagher) I spent four and a half years delivering dashboards, Sisense models and SQL reporting for HR, finance and operations teams. After an MSc in Data Science, I'm now applying that experience to medallion-architecture pipelines on Databricks and to AI assistants built with retrieval and conversation design.</p>
         </Section>
 
         <Section id="experience" label="Experience">
-          <div className="rounded-2xl border border-border bg-card p-8">
+          <article className="rounded-2xl border border-border bg-card p-6 transition hover:border-teal md:p-8">
             <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <h3 className="font-display text-2xl">Buck (Gallagher)</h3>
-              <span className="text-sm text-muted-foreground">Business Intelligence & Analytics</span>
+              <h3 className="font-display text-2xl">Senior Software Engineer – Data Analytics</h3>
+              <span className="text-sm text-muted-foreground">Jan 2019 – Sep 2023</span>
             </div>
-            <ul className="mt-5 space-y-2 text-muted-foreground">
-              <li>— Built and maintained enterprise reporting.</li>
-              <li>— Designed SQL-based data models for analytics.</li>
+            <p className="mt-1 font-medium text-accent-foreground">Buck (Gallagher)</p>
+            <ul className="mt-6 space-y-3">
+              {experience.map((e) => <li key={e} className="flex gap-3 text-muted-foreground"><span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-teal" aria-hidden />{e}</li>)}
             </ul>
+          </article>
+        </Section>
+
+        <Section id="projects" label="Featured Projects">
+          <article className="group relative overflow-hidden rounded-3xl bg-primary p-7 text-primary-foreground shadow-[0_30px_60px_-30px_var(--navy)] transition duration-500 hover:-translate-y-1 md:p-10">
+            <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-teal opacity-25 blur-3xl transition duration-700 group-hover:opacity-40" />
+            <span className="relative inline-block rounded-full bg-teal px-3 py-1 text-xs font-semibold uppercase tracking-widest text-primary">Flagship project</span>
+            <h3 className="relative mt-5 font-display text-3xl md:text-5xl">Sanchari</h3>
+            <p className="relative mt-2 text-lg text-primary-foreground/80">YouTube Analytics Data Engineering</p>
+            <p className="relative mt-4 max-w-2xl text-primary-foreground/75">A medallion-style pipeline that ingests YouTube data into Bronze, then deduplicates and reconciles it into a clean Silver layer.</p>
+            <dl className="relative mt-8 grid gap-4 sm:grid-cols-3">
+              {metrics.map((m) => (
+                <div key={m.label} className="rounded-2xl border border-primary-foreground/15 p-5">
+                  <dt className="text-sm text-primary-foreground/70">{m.label}</dt>
+                  <dd className="mt-1 font-display text-3xl text-teal">{m.value}</dd>
+                </div>
+              ))}
+            </dl>
+            <div className="relative mt-8 grid gap-6 md:grid-cols-2">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-primary-foreground/60">Built with</p>
+                <div className="mt-3 flex flex-wrap gap-2">{["Python", "PySpark", "Databricks", "Delta Lake"].map((t) => <span key={t} className="rounded-full border border-primary-foreground/25 px-3 py-1 text-xs">{t}</span>)}</div>
+              </div>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-primary-foreground/60">Planned next</p>
+                <div className="mt-3 flex flex-wrap gap-2">{["dbt Gold layer", "Databricks Jobs", "Power BI"].map((t) => <span key={t} className="rounded-full border border-dashed border-primary-foreground/40 px-3 py-1 text-xs text-primary-foreground/80">{t} · planned</span>)}</div>
+              </div>
+            </div>
+            <a href={SANCHARI} target="_blank" rel="noreferrer" className="relative mt-8 inline-flex items-center gap-2 rounded-full bg-primary-foreground px-5 py-3 text-sm font-semibold text-primary transition hover:bg-teal">
+              View on GitHub <ArrowUpRight className="h-4 w-4" aria-hidden />
+            </a>
+          </article>
+
+          <div className="mt-6 grid gap-6 md:grid-cols-2">
+            {projects.map((p, i) => (
+              <Reveal key={p.title} delay={i * 80}>
+                <article className="group flex h-full flex-col rounded-2xl border border-border bg-card p-7 transition duration-300 hover:-translate-y-1 hover:border-teal hover:shadow-[0_20px_40px_-24px_var(--teal)]">
+                  <span className="text-xs font-semibold uppercase tracking-widest text-accent-foreground">{p.tag}</span>
+                  <h3 className="mt-4 font-display text-2xl">{p.title}</h3>
+                  <p className="mt-3 flex-1 text-muted-foreground">{p.desc}</p>
+                  <div className="mt-6 flex flex-wrap gap-2">{p.stack.map((t) => <span key={t} className="rounded-full bg-accent px-3 py-1 text-xs text-accent-foreground">{t}</span>)}</div>
+                </article>
+              </Reveal>
+            ))}
           </div>
         </Section>
 
         <Section id="skills" label="Technical Skills">
-          <div className="grid gap-6 sm:grid-cols-2">
+          <div className="grid gap-8 sm:grid-cols-2">
             {skills.map((s) => (
               <div key={s.group}>
                 <h3 className="mb-3 font-semibold">{s.group}</h3>
-                <div className="flex flex-wrap gap-2">
-                  {s.items.map((i) => <span key={i} className="rounded-full bg-secondary px-3 py-1 text-sm text-secondary-foreground">{i}</span>)}
-                </div>
+                <div className="flex flex-wrap gap-2">{s.items.map((i) => <span key={i} className="rounded-full bg-secondary px-3 py-1 text-sm text-secondary-foreground">{i}</span>)}</div>
               </div>
             ))}
           </div>
         </Section>
 
-        <Section id="projects" label="Featured Projects">
-          <div className="grid gap-6 md:grid-cols-2">
-            {projects.map((p, idx) => (
-              <a key={p.title} href={p.href} target="_blank" rel="noreferrer"
-                className={`group relative flex flex-col rounded-2xl border border-border bg-card p-8 transition duration-300 hover:-translate-y-1 hover:border-teal hover:shadow-[0_20px_40px_-20px_var(--teal)] ${idx === 0 ? "md:col-span-2 bg-primary text-primary-foreground" : ""}`}>
-                <div className="flex items-start justify-between">
-                  <span className={`text-xs font-semibold uppercase tracking-widest ${idx === 0 ? "text-teal" : "text-teal"}`}>{p.tag}</span>
-                  <ArrowUpRight className="h-5 w-5 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-teal" />
-                </div>
-                <h3 className={`mt-6 font-display ${idx === 0 ? "text-3xl md:text-4xl" : "text-2xl"}`}>{p.title}</h3>
-                <p className={`mt-3 max-w-xl ${idx === 0 ? "text-primary-foreground/75" : "text-muted-foreground"}`}>{p.desc}</p>
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {p.stack.map((t) => <span key={t} className={`rounded-full px-3 py-1 text-xs ${idx === 0 ? "border border-primary-foreground/25" : "bg-accent text-accent-foreground"}`}>{t}</span>)}
-                </div>
-              </a>
+        <Section id="credentials" label="Credentials">
+          <ul className="divide-y divide-border rounded-2xl border border-border bg-card">
+            {credentials.map((c) => (
+              <li key={c.name} className="flex flex-wrap items-center justify-between gap-3 px-6 py-4">
+                <span>{c.name}</span>
+                <span className={`rounded-full px-3 py-1 text-xs font-semibold ${c.status === "Earned" ? "bg-teal text-primary" : c.status === "In progress" ? "bg-accent text-accent-foreground" : "border border-dashed border-border text-muted-foreground"}`}>{c.status}</span>
+              </li>
+            ))}
+          </ul>
+        </Section>
+
+        <Section id="education" label="Education">
+          <div className="space-y-6">
+            {education.map((e) => (
+              <div key={e.degree} className="flex flex-wrap items-baseline justify-between gap-2">
+                <div><h3 className="font-display text-2xl">{e.degree}</h3><p className="text-muted-foreground">{e.school}</p></div>
+                <span className="text-sm text-muted-foreground">{e.year}</span>
+              </div>
             ))}
           </div>
         </Section>
 
-        <Section id="education" label="Education">
-          <h3 className="font-display text-2xl">MSc Data Science</h3>
-        </Section>
-
         <Section id="contact" label="Contact">
           <p className="font-display text-3xl md:text-4xl">Let's talk data.</p>
-          <p className="mt-4 text-muted-foreground">Open to analytics engineering, data engineering and applied AI roles in London.</p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a href={LI} target="_blank" rel="noreferrer" className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-teal">Connect on LinkedIn</a>
-            <a href={GH} target="_blank" rel="noreferrer" className="rounded-full border border-border px-6 py-3 text-sm font-medium transition hover:border-teal hover:text-teal">GitHub</a>
-          </div>
+          <p className="mt-4 text-muted-foreground">Open to data analytics, BI, analytics engineering and data engineering roles in London.</p>
+          <p className="mt-2"><a href={`mailto:${EMAIL}`} className="font-medium text-accent-foreground underline-offset-4 hover:underline">{EMAIL}</a></p>
+          <div className="mt-8"><Contacts /></div>
         </Section>
       </main>
-      <footer className="border-t border-border py-8 text-center text-sm text-muted-foreground">© {new Date().getFullYear()} Deepthy Chullikkatt Kunjachan</footer>
+      <footer className="border-t border-border py-8 text-center text-sm text-muted-foreground">© 2026 Deepthy Chullikkatt Kunjachan</footer>
     </div>
   );
 }
