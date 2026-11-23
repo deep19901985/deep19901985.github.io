@@ -45,7 +45,7 @@ const metrics = [
 const projects = [
   { title: "AI Customer Assistant", tag: "RAG · Automation", desc: "A retrieval-augmented customer assistant with automated workflows.", stack: ["RAG", "n8n", "OpenAI API", "Pinecone"] },
   { title: "Voice AI Mental Health Triage: ElevenLabs Worldwide Hackathon, London", tag: "December 2025 · Third prize, London", desc: "Contributed prompt design, conversation-flow design and AI interaction testing to a voice AI mental-health triage prototype. The team placed third in London.", stack: ["ElevenLabs", "Voice AI", "Prompt design"] },
-  { title: "Family Companion AI", tag: "OpenAI Build Week 2026", desc: "A family companion AI built during OpenAI Build Week 2026, designed with privacy-conscious data handling, human oversight and clear safety boundaries.", stack: ["OpenAI", "Conversational AI"] },
+  { title: "Family Companion AI", tag: "OpenAI Build Week 2026", desc: "A privacy-conscious prototype built during OpenAI Build Week 2026, designed around human oversight and clear safety boundaries.", stack: ["OpenAI", "Conversational AI"] },
   { title: "MSc House Price Prediction", tag: "Research", desc: "Research into KNN and Random Forest imputation techniques for house price prediction.", stack: ["Python", "KNN", "Random Forest"] },
 ];
 
@@ -62,6 +62,12 @@ const credentials = [
   { name: "Microsoft Fabric Analytics Engineer (DP-600)", status: "In progress" },
   { name: "Microsoft Power BI Data Analyst (PL-300)", status: "Planned" },
 ] as const;
+const credentialGroups = [
+  { label: "Earned", items: credentials.filter((c) => c.status === "Earned").map((c) => c.name) },
+  { label: "Knowledge badges", items: badges.map((b) => `Databricks: ${b}`) },
+  { label: "In progress", items: credentials.filter((c) => c.status === "In progress").map((c) => c.name) },
+  { label: "Planned", items: credentials.filter((c) => c.status === "Planned").map((c) => c.name) },
+];
 
 const education = [
   { degree: "MSc Data Science", school: "Nottingham Trent University", year: "2024" },
@@ -133,9 +139,9 @@ function Index() {
       <main id="main">
         <section id="top" className="mx-auto max-w-6xl px-6 pb-20 pt-16 md:pb-28 md:pt-28">
           <p className="rise mb-6 flex items-center gap-2 text-sm text-muted-foreground"><MapPin className="h-4 w-4 text-teal" aria-hidden /> London, United Kingdom</p>
-          <h1 className="rise font-display text-4xl leading-[1.05] tracking-tight sm:text-5xl md:text-7xl" style={{ animationDelay: "80ms" }}>Deepthy Chullikkatt Kunjachan</h1>
+          <h1 className="rise font-display text-4xl leading-[1.05] tracking-tight sm:text-5xl md:text-[3.5rem] lg:text-7xl" style={{ animationDelay: "80ms" }}>Deepthy Chullikkatt Kunjachan</h1>
           <p className="rise mt-6 text-base font-semibold text-accent-foreground md:text-lg" style={{ animationDelay: "140ms" }}>
-            Data Analytics & BI <span className="text-border">|</span> Analytics Engineering <span className="text-border">|</span> Data Engineering <span className="text-border">|</span> Applied AI
+            Data Analytics & BI <span className="text-muted-foreground" aria-hidden>|</span> Analytics Engineering <span className="text-muted-foreground" aria-hidden>|</span> Data Engineering <span className="text-muted-foreground" aria-hidden>|</span> Applied AI
           </p>
           <p className="rise mt-4 max-w-2xl text-lg text-muted-foreground" style={{ animationDelay: "200ms" }}>
             BI professional with 4.5+ years of commercial experience in enterprise reporting and SQL-based data modelling, now building lakehouse pipelines and applied AI solutions.
@@ -172,11 +178,11 @@ function Index() {
             <h3 className="relative mt-5 font-display text-3xl md:text-5xl">Sanchari</h3>
             <p className="relative mt-2 text-lg text-primary-foreground/80">YouTube Analytics Data Engineering</p>
             <p className="relative mt-4 max-w-2xl text-primary-foreground/75">A medallion-style pipeline that ingests YouTube data into Bronze, then deduplicates and reconciles it into a clean Silver layer.</p>
-            <dl className="relative mt-8 grid gap-4 sm:grid-cols-3">
+            <dl className="relative mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {metrics.map((m) => (
-                <div key={m.label} className="rounded-2xl border border-primary-foreground/15 p-5">
-                  <dt className="text-sm text-primary-foreground/70">{m.label}</dt>
-                  <dd className="mt-1 font-display text-3xl text-teal">{m.value}</dd>
+                <div key={m.label} className="flex min-w-0 flex-col-reverse justify-end rounded-2xl border border-primary-foreground/15 p-5 last:sm:col-span-2 last:lg:col-span-1">
+                  <dt className="mt-1 text-sm leading-snug text-primary-foreground/80">{m.label}</dt>
+                  <dd className="font-display text-3xl text-teal">{m.value}</dd>
                 </div>
               ))}
             </dl>
@@ -221,25 +227,20 @@ function Index() {
           </div>
         </Section>
 
-        <Section id="credentials" label="Credentials">
-          <h3 className="mb-4 font-semibold">Professional certifications</h3>
-          <ul className="divide-y divide-border rounded-2xl border border-border bg-card">
-            {credentials.map((c) => (
-              <li key={c.name} className="flex flex-wrap items-center justify-between gap-3 px-6 py-4">
-                <span>{c.name}</span>
-                <span className={`rounded-full px-3 py-1 text-xs font-semibold ${c.status === "Earned" ? "bg-teal text-primary" : c.status === "In progress" ? "bg-accent text-accent-foreground" : "border border-dashed border-border text-muted-foreground"}`}>{c.status}</span>
-              </li>
+        <Section id="credentials" label="Certifications & Learning">
+          <div className="grid gap-6 sm:grid-cols-2">
+            {credentialGroups.map((g) => (
+              <div key={g.label} className={`rounded-2xl border bg-card p-6 transition hover:border-teal ${g.label === "Earned" ? "border-teal" : g.label === "Planned" ? "border-dashed border-border" : "border-border"}`}>
+                <h3 className="flex items-center gap-2 font-semibold">
+                  <span aria-hidden className={`h-2.5 w-2.5 rounded-full ${g.label === "Earned" ? "bg-teal" : g.label === "Knowledge badges" ? "bg-primary" : g.label === "In progress" ? "border-2 border-teal" : "border-2 border-dashed border-muted-foreground"}`} />
+                  {g.label}
+                </h3>
+                <ul className="mt-4 space-y-2 text-muted-foreground">
+                  {g.items.map((n) => <li key={n}>{n}</li>)}
+                </ul>
+              </div>
             ))}
-          </ul>
-          <h3 className="mb-4 mt-10 font-semibold">Databricks knowledge badges</h3>
-          <ul className="grid gap-4 sm:grid-cols-3">
-            {badges.map((b) => (
-              <li key={b} className="rounded-2xl border border-border bg-card p-5 transition hover:-translate-y-0.5 hover:border-teal">
-                <span className="text-xs font-semibold uppercase tracking-widest text-accent-foreground">Databricks · Badge</span>
-                <p className="mt-2 font-medium">{b}</p>
-              </li>
-            ))}
-          </ul>
+          </div>
         </Section>
 
         <Section id="education" label="Education">
