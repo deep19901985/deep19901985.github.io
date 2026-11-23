@@ -167,3 +167,37 @@ html { scroll-behavior: smooth; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
+
+/* Print / PDF: on-screen design is untouched; these rules only apply when printing. */
+@media print {
+  @page { margin: 14mm 12mm; }
+  html { scroll-behavior: auto; font-size: 11pt; }
+  body { background: #fff !important; color: var(--color-foreground); }
+  *, *::before, *::after { animation: none !important; transition: none !important; box-shadow: none !important; text-shadow: none !important; backdrop-filter: none !important; }
+  .print-hide { display: none !important; }
+  .rise, .print-reveal { opacity: 1 !important; transform: none !important; }
+  [class*="hover:-translate"] { transform: none !important; }
+  #top { padding-top: 0 !important; padding-bottom: 1.25rem !important; }
+  #top h1 { font-size: 2.1rem !important; }
+  .print-section { padding-top: 1.25rem !important; padding-bottom: 1.25rem !important; display: block !important; }
+  .print-section h2 { margin-bottom: 0.6rem !important; }
+  .print-section > div, .print-section .grid { display: block; }
+  .print-section .grid { display: grid !important; }
+  .print-section .h-full { height: auto !important; }
+  .print-section > .print-reveal { break-inside: auto; }
+  .print-section h2 { break-after: avoid; }
+  h1, h2, h3 { break-after: avoid; }
+  article, li, dl > div, .print-section .rounded-2xl { break-inside: avoid; }
+  p { orphans: 3; widows: 3; }
+  /* Dark flagship card: print as a light card with navy outline so it stays readable without background graphics. */
+  .print-dark-card { background: #fff !important; color: var(--color-primary) !important; border: 2px solid var(--color-primary); padding: 1.25rem !important; }
+  .print-dark-card * { color: var(--color-primary) !important; border-color: color-mix(in oklab, var(--color-primary) 35%, transparent) !important; }
+  .print-dark-card dd, .print-dark-card .text-teal { color: var(--color-accent-foreground) !important; }
+  .print-dark-card > span:first-of-type, .print-dark-card a { background: #fff !important; border: 1.5px solid var(--color-primary) !important; }
+  /* Buttons: outlined, dark text, and show where they go. */
+  a.rounded-full { background: #fff !important; color: var(--color-primary) !important; border: 1.5px solid var(--color-primary) !important; padding: 0.3rem 0.8rem !important; }
+  a.rounded-full svg { display: none; }
+  .print-contacts a[href^="mailto:"]::after { content: " – deepthy2k@gmail.com"; }
+  .print-contacts a[href^="http"]::after, .print-dark-card a[href^="http"]::after { content: " – " attr(href); font-weight: 400; }
+  footer { padding: 0.75rem 0 0 !important; }
+}

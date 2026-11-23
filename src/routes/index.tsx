@@ -86,7 +86,7 @@ function Reveal({ children, className = "", delay = 0 }: { children: ReactNode; 
   }, []);
   return (
     <div ref={ref} style={{ transitionDelay: `${delay}ms` }}
-      className={`transition-all duration-700 ease-out motion-reduce:transition-none ${shown ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0 motion-reduce:translate-y-0 motion-reduce:opacity-100"} ${className}`}>
+      className={`print-reveal transition-all duration-700 ease-out motion-reduce:transition-none ${shown ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0 motion-reduce:translate-y-0 motion-reduce:opacity-100"} ${className}`}>
       {children}
     </div>
   );
@@ -94,7 +94,7 @@ function Reveal({ children, className = "", delay = 0 }: { children: ReactNode; 
 
 function Section({ id, label, children }: { id: string; label: string; children: ReactNode }) {
   return (
-    <section id={id} aria-labelledby={`${id}-h`} className="mx-auto max-w-6xl scroll-mt-20 border-t border-border px-6 py-16 md:grid md:grid-cols-[180px_1fr] md:gap-12 md:py-24">
+    <section id={id} aria-labelledby={`${id}-h`} className="print-section mx-auto max-w-6xl scroll-mt-20 border-t border-border px-6 py-16 md:grid md:grid-cols-[180px_1fr] md:gap-12 md:py-24">
       <h2 id={`${id}-h`} className="mb-6 text-xs font-semibold uppercase tracking-[0.2em] text-accent-foreground">{label}</h2>
       <Reveal>{children}</Reveal>
     </section>
@@ -106,7 +106,7 @@ const btnGhost = "inline-flex items-center gap-2 rounded-full border border-bord
 
 function Contacts() {
   return (
-    <div className="flex flex-wrap gap-3">
+    <div className="print-contacts flex flex-wrap gap-3">
       <a href={`mailto:${EMAIL}`} className={btnPrimary}><Mail className="h-4 w-4" aria-hidden /> Email</a>
       <a href={LI} target="_blank" rel="noreferrer" className={btnGhost}><Linkedin className="h-4 w-4" aria-hidden /> LinkedIn</a>
       <a href={GH} target="_blank" rel="noreferrer" className={btnGhost}><Github className="h-4 w-4" aria-hidden /> GitHub</a>
@@ -118,8 +118,8 @@ function Index() {
   const [open, setOpen] = useState(false);
   return (
     <div className="min-h-screen bg-background font-sans text-foreground">
-      <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-card focus:px-3 focus:py-2">Skip to content</a>
-      <header className="sticky top-0 z-30 border-b border-border bg-background/90 backdrop-blur">
+      <a href="#main" className="print-hide sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-card focus:px-3 focus:py-2">Skip to content</a>
+      <header className="print-hide sticky top-0 z-30 border-b border-border bg-background/90 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <a href="#top" className="font-display text-lg font-semibold">Deepthy C K<span className="text-teal">.</span></a>
           <nav aria-label="Main" className="hidden gap-6 text-sm text-muted-foreground lg:flex">
@@ -146,7 +146,7 @@ function Index() {
           <p className="rise mt-4 max-w-2xl text-lg text-muted-foreground" style={{ animationDelay: "200ms" }}>
             BI professional with 4.5+ years of commercial experience in enterprise reporting and SQL-based data modelling, now building lakehouse pipelines and applied AI solutions.
           </p>
-          <div className="rise mt-10 flex flex-wrap gap-3" style={{ animationDelay: "260ms" }}>
+          <div className="print-hide rise mt-10 flex flex-wrap gap-3" style={{ animationDelay: "260ms" }}>
             <a href="#projects" className={`${btnPrimary} px-7 py-4 text-base`}>View Projects</a>
             <a href="#sanchari" className={`${btnGhost} border-teal px-7 py-4 text-base`}>Explore Sanchari <ArrowUpRight className="h-4 w-4" aria-hidden /></a>
           </div>
@@ -172,8 +172,8 @@ function Index() {
         </Section>
 
         <Section id="projects" label="Featured Projects">
-          <article id="sanchari" className="group relative scroll-mt-24 overflow-hidden rounded-3xl bg-primary p-7 text-primary-foreground shadow-[0_30px_60px_-30px_var(--navy)] transition duration-500 hover:-translate-y-1 md:p-10">
-            <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-teal opacity-25 blur-3xl transition duration-700 group-hover:opacity-40" />
+          <article id="sanchari" className="print-dark-card group relative scroll-mt-24 overflow-hidden rounded-3xl bg-primary p-7 text-primary-foreground shadow-[0_30px_60px_-30px_var(--navy)] transition duration-500 hover:-translate-y-1 md:p-10">
+            <div aria-hidden className="print-hide pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-teal opacity-25 blur-3xl transition duration-700 group-hover:opacity-40" />
             <span className="relative inline-block rounded-full bg-teal px-3 py-1 text-xs font-semibold uppercase tracking-widest text-primary">Flagship project</span>
             <h3 className="relative mt-5 font-display text-3xl md:text-5xl">Sanchari</h3>
             <p className="relative mt-2 text-lg text-primary-foreground/80">YouTube Analytics Data Engineering</p>
