@@ -20,10 +20,24 @@ jobs:
       - run: bun run build
       - name: Collect static files
         run: |
-          cp -r dist/client site
-          rm -f site/_headers
+          set -e
+          echo "Build output:"; find dist .output -maxdepth 3 2>/dev/null | head -100 || true
+          SRC=""
+          for d in dist/client .output/public dist/public dist; do
+            if [ -f "$d/index.html" ]; then SRC="$d"; break; fi
+          done
+          if [ -z "$SRC" ]; then
+            IDX=$(find dist .output -name index.html -not -path "*/server/*" 2>/dev/null | head -1 || true)
+            [ -n "$IDX" ] && SRC=$(dirname "$IDX")
+          fi
+          if [ -z "$SRC" ]; then echo "No index.html found in build output"; exit 1; fi
+          echo "Using static files from $SRC"
+          mkdir -p site
+          cp -r "$SRC"/. site/
+          rm -rf site/server site/_headers
           cp site/index.html site/404.html
           touch site/.nojekyll
+          ls -la site site/assets
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
