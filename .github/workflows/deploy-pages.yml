@@ -20,9 +20,8 @@ jobs:
       - run: bun run build
       - name: Collect static files
         run: |
-          DIR=$(dirname "$(find .output dist -name index.html -not -path '*/server/*' 2>/dev/null | head -1)")
-          echo "Static output: $DIR"
-          cp -r "$DIR" site
+          cp -r dist/client site
+          rm -f site/_headers
           cp site/index.html site/404.html
           touch site/.nojekyll
       - uses: actions/upload-pages-artifact@v3

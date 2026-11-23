@@ -30,7 +30,7 @@ const experience = [
 ];
 
 const skills = [
-  { group: "BI & Reporting", items: ["Sisense", "Elasticube modelling", "Dashboard design", "Enterprise reporting"] },
+  { group: "BI & Reporting", items: ["Power BI", "DAX", "Sisense", "Elasticube modelling", "Dashboard design", "Enterprise reporting"] },
   { group: "Data & Analytics Engineering", items: ["SQL", "Data modelling", "Python", "PySpark", "Databricks", "Delta Lake"] },
   { group: "Applied AI", items: ["RAG", "OpenAI API", "Pinecone", "n8n", "Prompt design", "Conversation design"] },
   { group: "Ways of working", items: ["Agile delivery", "Mentoring", "Stakeholder reporting"] },
@@ -44,15 +44,20 @@ const metrics = [
 
 const projects = [
   { title: "AI Customer Assistant", tag: "RAG · Automation", desc: "A retrieval-augmented customer assistant with automated workflows.", stack: ["RAG", "n8n", "OpenAI API", "Pinecone"] },
-  { title: "Voice AI Mental Health Triage", tag: "Hackathon · 3rd prize, London", desc: "ElevenLabs Worldwide Hackathon, London, December 2025. My contribution: prompt design, conversation-flow design and AI interaction testing.", stack: ["ElevenLabs", "Voice AI", "Prompt design"] },
-  { title: "Family Companion AI", tag: "OpenAI Build Week 2026", desc: "A companion AI project built during OpenAI Build Week 2026.", stack: ["OpenAI", "Conversational AI"] },
+  { title: "Voice AI Mental Health Triage: ElevenLabs Worldwide Hackathon, London", tag: "December 2025 · Third prize, London", desc: "Contributed prompt design, conversation-flow design and AI interaction testing to a voice AI mental-health triage prototype. The team placed third in London.", stack: ["ElevenLabs", "Voice AI", "Prompt design"] },
+  { title: "Family Companion AI", tag: "OpenAI Build Week 2026", desc: "A family companion AI built during OpenAI Build Week 2026, designed with privacy-conscious data handling, human oversight and clear safety boundaries.", stack: ["OpenAI", "Conversational AI"] },
   { title: "MSc House Price Prediction", tag: "Research", desc: "Research into KNN and Random Forest imputation techniques for house price prediction.", stack: ["Python", "KNN", "Random Forest"] },
+];
+
+const badges = [
+  "Build Data Pipelines with Lakeflow Spark Declarative Pipelines",
+  "Deploy Workloads with Lakeflow Jobs",
+  "Data Ingestion with Lakeflow Connect",
 ];
 
 const credentials = [
   { name: "Microsoft Azure AI Fundamentals (AI-900)", status: "Earned" },
   { name: "DataCamp Data Engineer Associate", status: "Earned" },
-  { name: "Databricks Lakeflow knowledge badges", status: "Earned" },
   { name: "Databricks Data Engineer Associate", status: "In progress" },
   { name: "Microsoft Fabric Analytics Engineer (DP-600)", status: "In progress" },
   { name: "Microsoft Power BI Data Analyst (PL-300)", status: "Planned" },
@@ -135,7 +140,11 @@ function Index() {
           <p className="rise mt-4 max-w-2xl text-lg text-muted-foreground" style={{ animationDelay: "200ms" }}>
             BI professional with 4.5+ years of commercial experience in enterprise reporting and SQL-based data modelling, now building lakehouse pipelines and applied AI solutions.
           </p>
-          <div className="rise mt-10" style={{ animationDelay: "260ms" }}><Contacts /></div>
+          <div className="rise mt-10 flex flex-wrap gap-3" style={{ animationDelay: "260ms" }}>
+            <a href="#projects" className={`${btnPrimary} px-7 py-4 text-base`}>View Projects</a>
+            <a href="#sanchari" className={`${btnGhost} border-teal px-7 py-4 text-base`}>Explore Sanchari <ArrowUpRight className="h-4 w-4" aria-hidden /></a>
+          </div>
+          <div className="rise mt-6" style={{ animationDelay: "320ms" }}><Contacts /></div>
         </section>
 
         <Section id="about" label="About">
@@ -157,7 +166,7 @@ function Index() {
         </Section>
 
         <Section id="projects" label="Featured Projects">
-          <article className="group relative overflow-hidden rounded-3xl bg-primary p-7 text-primary-foreground shadow-[0_30px_60px_-30px_var(--navy)] transition duration-500 hover:-translate-y-1 md:p-10">
+          <article id="sanchari" className="group relative scroll-mt-24 overflow-hidden rounded-3xl bg-primary p-7 text-primary-foreground shadow-[0_30px_60px_-30px_var(--navy)] transition duration-500 hover:-translate-y-1 md:p-10">
             <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-teal opacity-25 blur-3xl transition duration-700 group-hover:opacity-40" />
             <span className="relative inline-block rounded-full bg-teal px-3 py-1 text-xs font-semibold uppercase tracking-widest text-primary">Flagship project</span>
             <h3 className="relative mt-5 font-display text-3xl md:text-5xl">Sanchari</h3>
@@ -173,12 +182,13 @@ function Index() {
             </dl>
             <div className="relative mt-8 grid gap-6 md:grid-cols-2">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-primary-foreground/60">Built with</p>
+                <p className="text-xs font-semibold uppercase tracking-widest text-teal">✓ Implemented</p>
+                <ul className="mt-3 space-y-1 text-sm text-primary-foreground/85"><li>Bronze layer: raw YouTube data ingestion</li><li>Silver layer: deduplication and reconciliation</li></ul>
                 <div className="mt-3 flex flex-wrap gap-2">{["Python", "PySpark", "Databricks", "Delta Lake"].map((t) => <span key={t} className="rounded-full border border-primary-foreground/25 px-3 py-1 text-xs">{t}</span>)}</div>
               </div>
               <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-primary-foreground/60">Planned next</p>
-                <div className="mt-3 flex flex-wrap gap-2">{["dbt Gold layer", "Databricks Jobs", "Power BI"].map((t) => <span key={t} className="rounded-full border border-dashed border-primary-foreground/40 px-3 py-1 text-xs text-primary-foreground/80">{t} · planned</span>)}</div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-primary-foreground/60">Planned — not yet built</p>
+                <div className="mt-3 flex flex-wrap gap-2">{["dbt Gold models", "Databricks Jobs orchestration", "Power BI reporting"].map((t) => <span key={t} className="rounded-full border border-dashed border-primary-foreground/40 px-3 py-1 text-xs text-primary-foreground/80">{t} · planned</span>)}</div>
               </div>
             </div>
             <a href={SANCHARI} target="_blank" rel="noreferrer" className="relative mt-8 inline-flex items-center gap-2 rounded-full bg-primary-foreground px-5 py-3 text-sm font-semibold text-primary transition hover:bg-teal">
@@ -212,11 +222,21 @@ function Index() {
         </Section>
 
         <Section id="credentials" label="Credentials">
+          <h3 className="mb-4 font-semibold">Professional certifications</h3>
           <ul className="divide-y divide-border rounded-2xl border border-border bg-card">
             {credentials.map((c) => (
               <li key={c.name} className="flex flex-wrap items-center justify-between gap-3 px-6 py-4">
                 <span>{c.name}</span>
                 <span className={`rounded-full px-3 py-1 text-xs font-semibold ${c.status === "Earned" ? "bg-teal text-primary" : c.status === "In progress" ? "bg-accent text-accent-foreground" : "border border-dashed border-border text-muted-foreground"}`}>{c.status}</span>
+              </li>
+            ))}
+          </ul>
+          <h3 className="mb-4 mt-10 font-semibold">Databricks knowledge badges</h3>
+          <ul className="grid gap-4 sm:grid-cols-3">
+            {badges.map((b) => (
+              <li key={b} className="rounded-2xl border border-border bg-card p-5 transition hover:-translate-y-0.5 hover:border-teal">
+                <span className="text-xs font-semibold uppercase tracking-widest text-accent-foreground">Databricks · Badge</span>
+                <p className="mt-2 font-medium">{b}</p>
               </li>
             ))}
           </ul>
