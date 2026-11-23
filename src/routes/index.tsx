@@ -55,18 +55,21 @@ const badges = [
   "Data Ingestion with Lakeflow Connect",
 ];
 
-const credentials = [
+type Credential = { name: string; status?: "Earned" | "In progress" | "Planned"; year?: string };
+const credentials: Credential[] = [
   { name: "Microsoft Azure AI Fundamentals (AI‑900)", status: "Earned" },
   { name: "DataCamp Data Engineer Associate", status: "Earned" },
+  { name: "Certified ScrumMaster (CSM)", status: "Earned", year: "2021" },
+  { name: "Certified Scrum Product Owner (CSPO)", status: "Earned", year: "2025" },
   { name: "Databricks Data Engineer Associate", status: "In progress" },
   { name: "Microsoft Fabric Analytics Engineer (DP‑600)", status: "In progress" },
   { name: "Microsoft Power BI Data Analyst (PL‑300)", status: "Planned" },
 ] as const;
 const credentialGroups = [
-  { label: "Earned", items: credentials.filter((c) => c.status === "Earned").map((c) => c.name) },
-  { label: "Knowledge badges", items: badges.map((b) => `Databricks: ${b}`) },
-  { label: "In progress", items: credentials.filter((c) => c.status === "In progress").map((c) => c.name) },
-  { label: "Planned", items: credentials.filter((c) => c.status === "Planned").map((c) => c.name) },
+  { label: "Earned", items: credentials.filter((c) => c.status === "Earned").map((c) => c) },
+  { label: "Knowledge badges", items: badges.map<Credential>((b) => ({ name: `Databricks: ${b}` })) },
+  { label: "In progress", items: credentials.filter((c) => c.status === "In progress").map((c) => c) },
+  { label: "Planned", items: credentials.filter((c) => c.status === "Planned").map((c) => c) },
 ];
 
 const education = [
@@ -236,7 +239,7 @@ function Index() {
                   {g.label}
                 </h3>
                 <ul className="mt-4 space-y-2 text-muted-foreground">
-                  {g.items.map((n) => <li key={n}>{n}</li>)}
+                  {g.items.map((c) => <li key={c.name}>{c.name}{c.year ? <span className="ml-2 text-sm text-muted-foreground/70">· {c.year}</span> : null}</li>)}
                 </ul>
               </div>
             ))}
