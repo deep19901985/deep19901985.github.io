@@ -56,11 +56,11 @@ const badges = [
 ];
 
 const credentials = [
-  { name: "Microsoft Azure AI Fundamentals (AI-900)", status: "Earned" },
+  { name: "Microsoft Azure AI Fundamentals (AI‑900)", status: "Earned" },
   { name: "DataCamp Data Engineer Associate", status: "Earned" },
   { name: "Databricks Data Engineer Associate", status: "In progress" },
-  { name: "Microsoft Fabric Analytics Engineer (DP-600)", status: "In progress" },
-  { name: "Microsoft Power BI Data Analyst (PL-300)", status: "Planned" },
+  { name: "Microsoft Fabric Analytics Engineer (DP‑600)", status: "In progress" },
+  { name: "Microsoft Power BI Data Analyst (PL‑300)", status: "Planned" },
 ] as const;
 const credentialGroups = [
   { label: "Earned", items: credentials.filter((c) => c.status === "Earned").map((c) => c.name) },
